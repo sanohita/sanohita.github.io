@@ -665,6 +665,7 @@
                 <script>
                     document.addEventListener('DOMContentLoaded', () => {
                         const rightPane = document.getElementById('right-workspace-pane');
+                        const bioNowCard = document.getElementById('bio-now-card');
                         const footerDivider = document.getElementById('footer-divider-line');
                         const demoBtn = document.getElementById('demo-trigger-btn');
                         const demoBtnIcon = document.getElementById('demo-trigger-icon');
@@ -690,15 +691,20 @@
                         let cursorY = window.innerHeight / 2;
                         let cursorScale = 1;
 
-                        // Anchors caption cleanly inside bottom of #right-workspace-pane on desktop (>=768px), or 2px above footer divider on mobile (<768px)
+                        // Anchors caption right above #bio-now-card height on desktop (>=768px), or 2px above footer divider on mobile (<768px)
                         function syncCaptionPosition() {
                             if (!captionPill) return;
                             const pillHeight = captionPill.offsetHeight || 28;
                             if (window.innerWidth >= 768 && rightPane) {
                                 const rightRect = rightPane.getBoundingClientRect();
+                                const nowTop = bioNowCard ? bioNowCard.getBoundingClientRect().top : 0;
                                 if (rightRect.width > 0 && rightRect.height > 0) {
                                     captionPill.style.left = `${Math.round(rightRect.left + rightRect.width / 2)}px`;
-                                    captionPill.style.top = `${Math.round(rightRect.bottom - pillHeight - 16)}px`;
+                                    if (nowTop > pillHeight + 16) {
+                                        captionPill.style.top = `${Math.round(nowTop - pillHeight - 10)}px`;
+                                    } else {
+                                        captionPill.style.top = `${Math.round(rightRect.bottom - pillHeight - 16)}px`;
+                                    }
                                 }
                             } else if (footerDivider) {
                                 const lineRect = footerDivider.getBoundingClientRect();
@@ -713,6 +719,7 @@
                         if (typeof ResizeObserver !== 'undefined') {
                             const captionRo = new ResizeObserver(syncCaptionPosition);
                             if (rightPane) captionRo.observe(rightPane);
+                            if (bioNowCard) captionRo.observe(bioNowCard);
                             if (footerDivider) captionRo.observe(footerDivider);
                         }
                         if (document.fonts && document.fonts.ready) {
@@ -1509,11 +1516,11 @@
                 <div class="slider-container min-h-[236px] md:flex-1 md:min-h-0 md:flex md:flex-col">
                     <div id="content-slider-track" class="slider-track md:flex-1 md:min-h-0">
                         
-                        <!-- Slide 1: Bio + 6 Tags (Lowered on Desktop) + "Now" Status Card Above + Bottom-Pinned 3-Card Bento Row -->
+                        <!-- Slide 1: Bio + 6 Tags (Centered in Upper-Middle Space on Desktop) + "Now" Status Card Above + Bottom-Pinned 3-Card Bento Row -->
                         <div class="slide flex flex-col items-center justify-between text-center md:h-full">
                             
-                            <!-- Top Intro & 6 Skill/Identity Tags (Lowered slightly on Desktop so it feels balanced below the tab bar) -->
-                            <div class="w-full flex flex-col items-center md:mt-6 lg:mt-8">
+                            <!-- Top Intro & 6 Skill/Identity Tags (Centered vertically in the upper-middle space on Desktop via md:my-auto) -->
+                            <div class="w-full flex flex-col items-center md:my-auto md:py-4">
                                 <p class="text-slate-600 text-[13.5px] md:text-[15.5px] leading-relaxed mb-3 md:mb-4 max-w-xl">
                                     🚀 <span class="font-semibold text-slate-800">10th-grade PPLG student</span> passionate about gadget tinkering and tactile, expressive UI design.
                                 </p>
@@ -1530,10 +1537,10 @@
                             </div>
 
                             <!-- Bottom Group on Desktop: Frosted "Now" Status Card on Top + 3-Card Bento Row Pinned at Bottom -->
-                            <div class="w-full flex flex-col gap-3 md:gap-3.5 shrink-0">
+                            <div class="w-full flex flex-col gap-3 md:gap-3.5 md:mt-0 shrink-0">
                                 
-                                <!-- Frosted "Now" Status Card (Sits right above the 3 Bento Cards on Desktop) -->
-                                <div class="w-full max-w-xl md:max-w-none text-left p-3 md:p-4 rounded-[1.25rem] bg-white/65 border border-white/90 shadow-xs">
+                                <!-- Frosted "Now" Status Card (Sits right above the 3 Bento Cards on Desktop; id="bio-now-card" anchors the Demo caption height) -->
+                                <div id="bio-now-card" class="w-full max-w-xl md:max-w-none text-left p-3 md:p-4 rounded-[1.25rem] bg-white/65 border border-white/90 shadow-xs">
                                     <div class="flex items-center justify-between mb-1">
                                         <span class="inline-flex items-center gap-1.5 text-[10px] md:text-[11px] font-extrabold uppercase tracking-wider text-indigo-600">
                                             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -1601,10 +1608,10 @@
                                     
                                     <!-- Project 1: Portfolio Website -->
                                     <div data-project-id="portfolio-website" role="button" tabindex="0" class="project-trigger w-full text-left p-3.5 md:p-4 rounded-[1.25rem] bg-white/60 border border-white/80 flex items-start gap-3 cursor-pointer group shrink-0">
-                                        <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg shadow-inner shrink-0 mt-0.5 transition-transform">
+                                        <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg shadow-inner shrink-0 mt-0.5 transition-transform pointer-events-none">
                                             <i class="fa-solid fa-wand-magic-sparkles text-base"></i>
                                         </div>
-                                        <div class="flex-1 min-w-0">
+                                        <div class="flex-1 min-w-0 pointer-events-none">
                                             <div class="flex items-center justify-between gap-2">
                                                 <h4 class="text-sm font-bold text-slate-800 truncate">Portfolio Website</h4>
                                                 <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-teal-500/15 text-teal-700 border border-teal-500/20 inline-flex items-center gap-1 shrink-0"><span class="w-1.5 h-1.5 rounded-full bg-teal-500"></span><span>Live</span></span>
@@ -1621,10 +1628,10 @@
 
                                     <!-- Project 2: Scratch OS Concepts -->
                                     <div data-project-id="scratch-os-projects" role="button" tabindex="0" class="project-trigger w-full text-left p-3.5 md:p-4 rounded-[1.25rem] bg-white/60 border border-white/80 flex items-start gap-3 cursor-pointer group shrink-0">
-                                        <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-lg shadow-inner shrink-0 mt-0.5 transition-transform">
+                                        <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-lg shadow-inner shrink-0 mt-0.5 transition-transform pointer-events-none">
                                             <i class="fa-solid fa-puzzle-piece text-base"></i>
                                         </div>
-                                        <div class="flex-1 min-w-0">
+                                        <div class="flex-1 min-w-0 pointer-events-none">
                                             <div class="flex items-center justify-between gap-2">
                                                 <h4 class="text-sm font-bold text-slate-800 truncate">Scratch OS Concepts</h4>
                                                 <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-700 border border-amber-500/20 inline-flex items-center gap-1 shrink-0"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Deprecated</span></span>
@@ -1641,10 +1648,10 @@
 
                                     <!-- Project 3: Unnamed Unity FPS Game -->
                                     <div data-project-id="unity-fps-game" role="button" tabindex="0" class="project-trigger w-full text-left p-3.5 md:p-4 rounded-[1.25rem] bg-white/60 border border-white/80 flex items-start gap-3 cursor-pointer group shrink-0">
-                                        <div class="w-10 h-10 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-lg shadow-inner shrink-0 mt-0.5 transition-transform">
+                                        <div class="w-10 h-10 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-lg shadow-inner shrink-0 mt-0.5 transition-transform pointer-events-none">
                                             <i class="fa-solid fa-crosshairs text-base"></i>
                                         </div>
-                                        <div class="flex-1 min-w-0">
+                                        <div class="flex-1 min-w-0 pointer-events-none">
                                             <div class="flex items-center justify-between gap-2">
                                                 <h4 class="text-sm font-bold text-slate-800 truncate">Unnamed Unity FPS Game</h4>
                                                 <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-500/15 text-amber-700 border border-amber-500/20 inline-flex items-center gap-1 shrink-0"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Deprecated</span></span>
@@ -2350,9 +2357,12 @@
 
                             trigger.addEventListener('pointermove', (e) => {
                                 if (!wasHeld) {
+                                    const canScroll = projectsList && (projectsList.scrollHeight - projectsList.clientHeight > 2);
+                                    if (!canScroll) return;
+
                                     const dy = e.clientY - startY;
                                     const dx = e.clientX - startX;
-                                    if (!didScroll && (Math.abs(dy) > 8 || Math.abs(dx) > 10)) {
+                                    if (!didScroll && (Math.abs(dy) > 12 || Math.abs(dx) > 14)) {
                                         didScroll = true;
                                         clearTimeout(holdTimer);
                                         trigger.classList.remove('is-pressing');
