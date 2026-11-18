@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Gilang Kencana | Portfolio</title>
     <meta name="description" content="Gilang Kencana (@juniortechwizard__) — 10th-grade PPLG student, tech creator, and expressive Fluid Glass Pane UI tinkerer.">
     
@@ -19,18 +19,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- GLOBAL VIEWPORT, AMBIENT ORBS, & DUAL-UI FLUID GLASS PANE STYLES -->
+    <!-- GLOBAL VIEWPORT, ANTI-ZOOM TOUCH RULES, AMBIENT ORBS, & DUAL-UI FLUID GLASS PANE STYLES -->
     <style>
         html, body {
             height: 100dvh;
             max-height: 100dvh;
             overflow: hidden;
             overscroll-behavior: none;
-            touch-action: manipulation;
+            touch-action: none;
+            -webkit-text-size-adjust: 100%;
         }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: #f1f5f9;
+        }
+
+        /* Explicit Vertical Pan-Y Allowed Only Inside Scrollable Feeds & Sheets */
+        #projects-scroll-list,
+        #milestones-scroll-list,
+        #project-detail-scroll,
+        #evidence-lightbox > div {
+            touch-action: pan-y;
         }
 
         /* 3 Floating Ambient Gradient Orbs */
@@ -60,7 +69,7 @@
             box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
         }
 
-        /* Desktop / Desktop-Site Request (>= 768px): Outer shell turns transparent for 30/70 top-aligned split panes */
+        /* Desktop / Desktop-Site Request (>= 768px): Outer shell dissolves for 30/70 upper-left + full-right layout */
         @media (min-width: 768px) {
             #main-glass-card {
                 background: transparent;
@@ -89,6 +98,8 @@
             cursor: pointer;
             touch-action: none;
             user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.22s ease, width 0.22s ease;
@@ -142,20 +153,20 @@
         }
     </style>
 </head>
-<body class="h-[100dvh] overflow-hidden flex items-center justify-center md:items-start md:justify-start relative text-slate-800 p-4 md:p-6 lg:p-8">
+<body class="h-[100dvh] overflow-hidden flex items-center justify-center md:items-stretch md:justify-start relative text-slate-800 p-4 md:p-6 lg:p-8">
 
     <!-- Floating Ambient Background Orbs -->
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
     <div class="ambient-orb orb-3"></div>
     
-    <!-- MAIN RESPONSIVE SHELL: Single Card on Mobile (<768px) | Upper-Left Profile + 70% Right Workspace on Desktop (>=768px) -->
-    <main id="main-glass-card" class="glass-card w-full max-w-sm md:max-w-none md:flex-row md:items-start md:gap-6 rounded-[2.5rem] p-6 sm:p-8 md:p-0 flex flex-col items-center relative z-10">
+    <!-- MAIN RESPONSIVE SHELL: Single Card on Mobile (<768px) | Upper-Left Profile + Full Right Side on Desktop (>=768px) -->
+    <main id="main-glass-card" class="glass-card w-full max-w-sm md:w-full md:max-w-none md:h-full md:p-0 md:flex-row md:items-stretch md:gap-6 rounded-[2.5rem] p-6 sm:p-8 flex flex-col items-center relative z-10">
         
         <!-- ============================================================== -->
         <!-- UPPER-LEFT GLASS PANE (30% ON DESKTOP): DEMO + PROFILE + SOCIALS -->
         <!-- ============================================================== -->
-        <section id="left-profile-pane" class="desktop-glass-pane md:w-[30%] md:max-w-[340px] md:shrink-0 md:rounded-[2.5rem] md:px-6 md:pt-12 md:pb-6 md:flex md:flex-col md:items-center relative">
+        <section id="left-profile-pane" class="desktop-glass-pane md:w-[30%] md:max-w-[330px] md:min-w-[260px] md:self-start md:shrink-0 md:rounded-[2.5rem] md:p-7 md:pt-12 md:flex md:flex-col md:items-center relative">
             
             <!-- ========================================== -->
             <!-- COMPONENT 1: PROFILE HEADER                -->
@@ -166,7 +177,8 @@
                     <img src="115703.png" 
                          onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Gilang+Kencana&background=c7d2fe&color=3730a3&size=200';"
                          alt="Gilang Kencana" 
-                         class="w-full h-full object-cover rounded-full border-[3px] border-white relative z-10 shadow-lg group-hover:shadow-xl transition-all duration-300">
+                         draggable="false"
+                         class="w-full h-full object-cover rounded-full border-[3px] border-white relative z-10 shadow-lg group-hover:shadow-xl transition-all duration-300 select-none">
                 </div>
                 <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight mb-0.5 text-center">Gilang Kencana</h1>
                 <p class="text-indigo-600 font-semibold text-xs tracking-wide">@juniortechwizard__</p>
@@ -185,6 +197,7 @@
                         transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
                         -webkit-touch-callout: none;
                         user-select: none;
+                        -webkit-user-select: none;
                     }
                     .liquid-btn::after {
                         content: '';
@@ -210,8 +223,19 @@
                     .liquid-btn:active::after { transform: translate(-50%, -50%) scale(1); transition: transform 0s; }
 
                     /* Popover Haptic Touch States & Fluid Glass Pane Translucent Material */
-                    .social-trigger { touch-action: none; }
-                    .social-popover { transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+                    .social-trigger {
+                        touch-action: none;
+                        -webkit-touch-callout: none;
+                        user-select: none;
+                        -webkit-user-select: none;
+                    }
+                    .social-popover {
+                        --popover-tx: -50%;
+                        transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.28s ease;
+                        -webkit-touch-callout: none;
+                        user-select: none;
+                        -webkit-user-select: none;
+                    }
                     .social-popover-glass {
                         background: rgba(255, 255, 255, 0.62);
                         backdrop-filter: blur(24px);
@@ -221,18 +245,21 @@
                     }
                     .social-popover a {
                         transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease, background-color 0.2s ease;
+                        -webkit-touch-callout: none;
+                        user-select: none;
+                        -webkit-user-select: none;
                     }
                     .social-popover a.jump-armed {
                         transform: scale(1.06);
                         filter: brightness(1.1);
                     }
                     .popover-closed {
-                        transform: translateX(-50%) scale(0.5);
+                        transform: translateX(var(--popover-tx)) scale(0.5);
                         opacity: 0;
                         pointer-events: none;
                     }
                     .popover-open {
-                        transform: translateX(-50%) scale(1);
+                        transform: translateX(var(--popover-tx)) scale(1);
                         opacity: 1;
                         pointer-events: auto;
                     }
@@ -249,13 +276,13 @@
                                 </div>
                                 <h4 class="text-sm font-extrabold text-slate-800">GitHub</h4>
                                 <p class="text-[11px] text-slate-600 font-semibold mb-3">@sanohita</p>
-                                <a href="https://github.com/sanohita" target="_blank" rel="noopener noreferrer" class="w-full py-2 bg-slate-800 text-white text-xs font-bold rounded-xl hover:bg-slate-700 transition-colors shadow-md flex items-center justify-center gap-1.5 active:scale-95">
+                                <a href="https://github.com/sanohita" target="_blank" rel="noopener noreferrer" draggable="false" class="w-full py-2 bg-slate-800 text-white text-xs font-bold rounded-xl hover:bg-slate-700 transition-colors shadow-md flex items-center justify-center gap-1.5 active:scale-95">
                                     <span>Jump to Profile</span>
                                 </a>
                             </div>
                         </div>
-                        <div class="liquid-btn social-trigger flex items-center justify-center w-12 h-12 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-[1.25rem] bg-white/60 text-slate-700 border border-white shadow-sm hover:text-indigo-600 transition-colors duration-300 cursor-pointer">
-                            <i class="fa-brands fa-github text-xl transition-transform duration-300"></i>
+                        <div role="button" tabindex="0" aria-label="GitHub" class="liquid-btn social-trigger flex items-center justify-center w-12 h-12 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-[1.25rem] bg-white/60 text-slate-700 border border-white shadow-sm hover:text-indigo-600 transition-colors duration-300 cursor-pointer">
+                            <i class="fa-brands fa-github text-xl transition-transform duration-300 pointer-events-none"></i>
                         </div>
                     </div>
 
@@ -269,13 +296,13 @@
                                 <h4 class="text-sm font-extrabold text-slate-800">Instagram</h4>
                                 <p class="text-[11px] text-slate-600 font-semibold mb-2">@sanohqjapox</p>
                                 <p class="text-xs text-slate-700 text-center mb-3 leading-tight">Daily life, casual snapshots, and random everyday moments.</p>
-                                <a href="https://instagram.com/sanohqjapox" target="_blank" rel="noopener noreferrer" class="w-full py-2 bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 text-white text-xs font-bold rounded-xl hover:opacity-90 transition-opacity shadow-md flex items-center justify-center gap-1.5 active:scale-95">
+                                <a href="https://instagram.com/sanohqjapox" target="_blank" rel="noopener noreferrer" draggable="false" class="w-full py-2 bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 text-white text-xs font-bold rounded-xl hover:opacity-90 transition-opacity shadow-md flex items-center justify-center gap-1.5 active:scale-95">
                                     <span>Jump to Profile</span>
                                 </a>
                             </div>
                         </div>
-                        <div class="liquid-btn social-trigger flex items-center justify-center w-12 h-12 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-[1.25rem] bg-white/60 text-slate-700 border border-white shadow-sm hover:text-pink-600 transition-colors duration-300 cursor-pointer">
-                            <i class="fa-brands fa-instagram text-xl transition-transform duration-300"></i>
+                        <div role="button" tabindex="0" aria-label="Instagram" class="liquid-btn social-trigger flex items-center justify-center w-12 h-12 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-[1.25rem] bg-white/60 text-slate-700 border border-white shadow-sm hover:text-pink-600 transition-colors duration-300 cursor-pointer">
+                            <i class="fa-brands fa-instagram text-xl transition-transform duration-300 pointer-events-none"></i>
                         </div>
                     </div>
 
@@ -289,17 +316,17 @@
                                 <h4 class="text-sm font-extrabold text-slate-800">TikTok</h4>
                                 <p class="text-[11px] text-slate-600 font-semibold mb-2">@juniortechwizard__</p>
                                 <p class="text-xs text-slate-700 text-center mb-3 leading-tight">Tech tips, UI experiments, and gadget tinkering.</p>
-                                <a href="https://tiktok.com/@juniortechwizard__" target="_blank" rel="noopener noreferrer" class="w-full py-2 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-slate-800 transition-colors shadow-md flex items-center justify-center gap-1.5 active:scale-95">
+                                <a href="https://tiktok.com/@juniortechwizard__" target="_blank" rel="noopener noreferrer" draggable="false" class="w-full py-2 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-slate-800 transition-colors shadow-md flex items-center justify-center gap-1.5 active:scale-95">
                                     <span>Jump to Profile</span>
                                 </a>
-                                <a href="https://tiktok.com/juniortechwizard" target="_blank" rel="noopener noreferrer" class="w-full mt-1.5 py-1.5 bg-white/70 text-slate-800 border border-white/85 text-[11px] font-bold rounded-xl hover:bg-white/90 transition-colors flex items-center justify-center gap-1.5 active:scale-95">
+                                <a href="https://tiktok.com/juniortechwizard" target="_blank" rel="noopener noreferrer" draggable="false" class="w-full mt-1.5 py-1.5 bg-white/70 text-slate-800 border border-white/85 text-[11px] font-bold rounded-xl hover:bg-white/90 transition-colors flex items-center justify-center gap-1.5 active:scale-95">
                                     <span>Visit Old Account</span>
                                     <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
                                 </a>
                             </div>
                         </div>
-                        <div class="liquid-btn social-trigger flex items-center justify-center w-12 h-12 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-[1.25rem] bg-white/60 text-slate-700 border border-white shadow-sm hover:text-slate-900 transition-colors duration-300 cursor-pointer">
-                            <i class="fa-brands fa-tiktok text-xl transition-transform duration-300"></i>
+                        <div role="button" tabindex="0" aria-label="TikTok" class="liquid-btn social-trigger flex items-center justify-center w-12 h-12 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-[1.25rem] bg-white/60 text-slate-700 border border-white shadow-sm hover:text-slate-900 transition-colors duration-300 cursor-pointer">
+                            <i class="fa-brands fa-tiktok text-xl transition-transform duration-300 pointer-events-none"></i>
                         </div>
                     </div>
 
@@ -312,13 +339,13 @@
                                 </div>
                                 <h4 class="text-sm font-extrabold text-slate-800">Email</h4>
                                 <p class="text-[10.5px] text-slate-600 font-semibold mb-3 break-all text-center">gilangkencana081@gmail.com</p>
-                                <a href="mailto:gilangkencana081@gmail.com" class="w-full py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-md flex items-center justify-center gap-1.5 active:scale-95">
+                                <a href="mailto:gilangkencana081@gmail.com" draggable="false" class="w-full py-2 bg-indigo-600 text-white text-xs font-bold rounded-xl hover:bg-indigo-700 transition-colors shadow-md flex items-center justify-center gap-1.5 active:scale-95">
                                     <span>Send Email</span>
                                 </a>
                             </div>
                         </div>
-                        <div class="liquid-btn social-trigger flex items-center justify-center w-12 h-12 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-[1.25rem] bg-white/60 text-slate-700 border border-white shadow-sm hover:text-indigo-600 transition-colors duration-300 cursor-pointer">
-                            <i class="fa-solid fa-envelope text-lg transition-transform duration-300"></i>
+                        <div role="button" tabindex="0" aria-label="Email" class="liquid-btn social-trigger flex items-center justify-center w-12 h-12 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-[1.25rem] bg-white/60 text-slate-700 border border-white shadow-sm hover:text-indigo-600 transition-colors duration-300 cursor-pointer">
+                            <i class="fa-solid fa-envelope text-lg transition-transform duration-300 pointer-events-none"></i>
                         </div>
                     </div>
 
@@ -327,6 +354,37 @@
                 <script>
                     document.addEventListener('DOMContentLoaded', () => {
                         const items = document.querySelectorAll('.social-item');
+                        let activeSocialHoldCount = 0;
+
+                        // Block native browser right-click / long-press context menu while holding any Haptic Touch button
+                        window.addEventListener('contextmenu', (e) => {
+                            if (activeSocialHoldCount > 0 || e.target.closest('.social-trigger, .social-popover')) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }
+                        }, { capture: true });
+
+                        function clampPopoverToViewport(trigger, popover) {
+                            const tRect = trigger.getBoundingClientRect();
+                            const popW = popover.offsetWidth || 200;
+                            const centerX = tRect.left + tRect.width / 2;
+                            const leftEdge = centerX - popW / 2;
+                            const rightEdge = centerX + popW / 2;
+                            const safeMargin = 12;
+
+                            if (leftEdge < safeMargin) {
+                                popover.style.setProperty('--popover-tx', `calc(-50% + ${Math.ceil(safeMargin - leftEdge)}px)`);
+                            } else if (rightEdge > window.innerWidth - safeMargin) {
+                                popover.style.setProperty('--popover-tx', `calc(-50% - ${Math.ceil(rightEdge - (window.innerWidth - safeMargin))}px)`);
+                            } else {
+                                popover.style.setProperty('--popover-tx', '-50%');
+                            }
+                        }
+
+                        function openPopover(item, trigger, popover) {
+                            clampPopoverToViewport(trigger, popover);
+                            popover.classList.replace('popover-closed', 'popover-open');
+                        }
 
                         function closeAll(except = null) {
                             items.forEach(item => {
@@ -339,6 +397,12 @@
                         }
 
                         window.__demoCloseSocialPopovers = () => closeAll();
+                        window.__demoClampSocialPopover = (item) => {
+                            if (!item) return;
+                            const tr = item.querySelector('.social-trigger');
+                            const pop = item.querySelector('.social-popover');
+                            if (tr && pop) clampPopoverToViewport(tr, pop);
+                        };
 
                         function triggerJumpAction(jumpBtn) {
                             if (!jumpBtn) return;
@@ -353,11 +417,27 @@
                             const popover = item.querySelector('.social-popover');
                             const actionLinks = Array.from(popover.querySelectorAll('a'));
                             let holdTimer = null;
+                            let isPointerDown = false;
                             let wasHeld = false;
                             let armedLink = null;
                             let lastArmedLink = null;
                             let lastArmedAt = 0;
                             item.dataset.toggled = 'false';
+
+                            trigger.addEventListener('contextmenu', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+                            popover.addEventListener('contextmenu', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+                            actionLinks.forEach(link => {
+                                link.addEventListener('contextmenu', (e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                });
+                            });
 
                             function getHoveredActionLink(x, y) {
                                 for (const link of actionLinks) {
@@ -377,18 +457,23 @@
                             }
 
                             trigger.addEventListener('pointerdown', (e) => {
+                                if (e.button !== undefined && e.button !== 0 && e.pointerType === 'mouse') return;
                                 e.stopPropagation();
+                                if (!isPointerDown) {
+                                    isPointerDown = true;
+                                    activeSocialHoldCount++;
+                                }
                                 wasHeld = false;
                                 armedLink = null;
                                 lastArmedLink = null;
                                 lastArmedAt = 0;
                                 actionLinks.forEach(link => link.classList.remove('jump-armed'));
-                                trigger.setPointerCapture(e.pointerId);
+                                try { trigger.setPointerCapture(e.pointerId); } catch (_) {}
                                 
                                 holdTimer = setTimeout(() => {
                                     wasHeld = true;
                                     closeAll(item);
-                                    popover.classList.replace('popover-closed', 'popover-open');
+                                    openPopover(item, trigger, popover);
                                     item.dataset.toggled = 'false';
                                     if (navigator.vibrate) navigator.vibrate(15);
                                 }, 300);
@@ -414,7 +499,11 @@
                             trigger.addEventListener('pointerup', (e) => {
                                 e.stopPropagation();
                                 clearTimeout(holdTimer);
-                                if (trigger.hasPointerCapture(e.pointerId)) {
+                                if (isPointerDown) {
+                                    isPointerDown = false;
+                                    activeSocialHoldCount = Math.max(0, activeSocialHoldCount - 1);
+                                }
+                                if (trigger.hasPointerCapture && trigger.hasPointerCapture(e.pointerId)) {
                                     trigger.releasePointerCapture(e.pointerId);
                                 }
 
@@ -432,7 +521,7 @@
                                     const isOpen = item.dataset.toggled === 'true';
                                     closeAll();
                                     if (!isOpen) {
-                                        popover.classList.replace('popover-closed', 'popover-open');
+                                        openPopover(item, trigger, popover);
                                         item.dataset.toggled = 'true';
                                     }
                                 }
@@ -440,12 +529,19 @@
 
                             trigger.addEventListener('pointercancel', (e) => {
                                 clearTimeout(holdTimer);
-                                if (trigger.hasPointerCapture(e.pointerId)) {
+                                if (isPointerDown) {
+                                    isPointerDown = false;
+                                    activeSocialHoldCount = Math.max(0, activeSocialHoldCount - 1);
+                                }
+                                if (trigger.hasPointerCapture && trigger.hasPointerCapture(e.pointerId)) {
                                     trigger.releasePointerCapture(e.pointerId);
                                 }
                                 actionLinks.forEach(link => link.classList.remove('jump-armed'));
                                 armedLink = null;
-                                if (wasHeld) popover.classList.replace('popover-open', 'popover-closed');
+                                // If browser canceled pointer mid-long-press, keep popover pinned open instead of snapping shut
+                                if (wasHeld) {
+                                    item.dataset.toggled = 'true';
+                                }
                             });
 
                             popover.addEventListener('pointerdown', (e) => e.stopPropagation());
@@ -582,16 +678,14 @@
                         let cursorY = window.innerHeight / 2;
                         let cursorScale = 1;
 
-                        // Anchors caption 2px above footer divider on mobile, or centered below the right workspace pane on desktop
+                        // Anchors caption 2px above footer divider on mobile, or inside bottom-center of right workspace pane on desktop
                         function syncCaptionPosition() {
                             if (!captionPill) return;
                             const pillHeight = captionPill.offsetHeight || 24;
                             if (window.innerWidth >= 768 && rightPane) {
                                 const rightRect = rightPane.getBoundingClientRect();
-                                const idealTop = rightRect.bottom + 12;
-                                const maxTop = window.innerHeight - pillHeight - 12;
                                 captionPill.style.left = `${Math.round(rightRect.left + rightRect.width / 2)}px`;
-                                captionPill.style.top = `${Math.round(Math.min(idealTop, maxTop))}px`;
+                                captionPill.style.top = `${Math.round(rightRect.bottom - pillHeight - 14)}px`;
                             } else if (footerDivider) {
                                 const lineRect = footerDivider.getBoundingClientRect();
                                 captionPill.style.left = '50%';
@@ -911,6 +1005,9 @@
                                     setGhostPress(true);
                                     await wait(480, token);
 
+                                    if (typeof window.__demoClampSocialPopover === 'function') {
+                                        window.__demoClampSocialPopover(tiktokItem);
+                                    }
                                     sPopover.classList.replace('popover-closed', 'popover-open');
                                     if (navigator.vibrate) navigator.vibrate(15);
                                     await wait(950, token);
@@ -955,9 +1052,9 @@
 
 
         <!-- ============================================================== -->
-        <!-- RIGHT WORKSPACE PANE (~70% ON DESKTOP): NAV BAR + 4 SLIDES     -->
+        <!-- FULL RIGHT WORKSPACE PANE (~70% ON DESKTOP): NAV + 4 SLIDES    -->
         <!-- ============================================================== -->
-        <section id="right-workspace-pane" class="desktop-glass-pane md:flex-1 md:min-w-0 md:rounded-[2.5rem] md:p-8 md:flex md:flex-col md:justify-between relative">
+        <section id="right-workspace-pane" class="desktop-glass-pane md:flex-1 md:min-w-0 md:h-full md:rounded-[2.5rem] md:p-8 lg:p-10 md:flex md:flex-col md:justify-between relative">
 
             <!-- Rightmost Glass-Card Unified Capsule Scroll Indicator (Shared by Projects & Milestones Tabs) -->
             <div id="projects-scroll-track" aria-hidden="true">
@@ -970,7 +1067,7 @@
             <!-- ========================================== -->
             <!-- COMPONENT 2: 4-TAB DRAGGABLE NAVIGATION    -->
             <!-- ========================================== -->
-            <div id="navigation-component" class="max-md:order-2 w-full mb-5 md:mb-6">
+            <div id="navigation-component" class="max-md:order-2 w-full mb-5 md:mb-6 shrink-0">
                 <style>
                     .pill-active { transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
                     .pill-dragging { transition: none; }
@@ -987,7 +1084,7 @@
                     .m3-icon-closed { width: 0px; opacity: 0; margin-right: 0px; }
                 </style>
 
-                <div id="tab-container" class="w-full bg-black/5 p-1 rounded-full flex items-center justify-between text-[11.5px] sm:text-[12.5px] md:text-[13px] font-semibold relative touch-none select-none">
+                <div id="tab-container" class="w-full bg-black/5 p-1 rounded-full flex items-center justify-between text-[11.5px] sm:text-[12.5px] md:text-[13.5px] font-semibold relative touch-none select-none">
                     
                     <!-- Spring-Physics Active White Pill -->
                     <div id="tab-indicator" class="absolute top-1 bottom-1 left-1 pill-active" style="width: calc(25% - 2px);">
@@ -1025,6 +1122,11 @@
                         let currentIndex = 0;
                         let containerWidth = 0;
                         let tabWidth = 0;
+
+                        tabContainer.addEventListener('contextmenu', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
 
                         function initSizes() {
                             containerWidth = tabContainer.getBoundingClientRect().width;
@@ -1107,7 +1209,7 @@
                         tabContainer.addEventListener('pointerdown', (e) => {
                             isDragging = true;
                             startX = e.clientX;
-                            tabContainer.setPointerCapture(e.pointerId);
+                            try { tabContainer.setPointerCapture(e.pointerId); } catch (_) {}
 
                             const rect = tabContainer.getBoundingClientRect();
                             const clickX = e.clientX - rect.left;
@@ -1157,7 +1259,7 @@
                         function releasePill(e) {
                             if (!isDragging) return;
                             isDragging = false;
-                            if (tabContainer.hasPointerCapture(e.pointerId)) {
+                            if (tabContainer.hasPointerCapture && tabContainer.hasPointerCapture(e.pointerId)) {
                                 tabContainer.releasePointerCapture(e.pointerId);
                             }
 
@@ -1196,7 +1298,7 @@
             <!-- ========================================== -->
             <!-- COMPONENT 3: 4-SLIDE CONTENT AREA          -->
             <!-- ========================================== -->
-            <div id="content-slider-component" class="max-md:order-3 w-full md:flex-1 md:flex md:flex-col md:justify-center relative">
+            <div id="content-slider-component" class="max-md:order-3 w-full md:flex-1 md:min-h-0 md:flex md:flex-col relative">
                 <style>
                     .slider-container {
                         overflow: hidden;
@@ -1265,6 +1367,9 @@
                         box-shadow: 0 24px 50px -12px rgba(15, 23, 42, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.95);
                         transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.28s ease;
                         transform-origin: bottom center;
+                        -webkit-touch-callout: none;
+                        user-select: none;
+                        -webkit-user-select: none;
                     }
                     #project-peek-popover.peek-closed {
                         transform: translateY(12px) scale(0.65);
@@ -1334,17 +1439,17 @@
                     </button>
                 </div>
 
-                <div class="slider-container min-h-[236px] md:min-h-[272px]">
-                    <div id="content-slider-track" class="slider-track">
+                <div class="slider-container min-h-[236px] md:flex-1 md:min-h-0 md:flex md:flex-col">
+                    <div id="content-slider-track" class="slider-track md:flex-1 md:min-h-0">
                         
                         <!-- Slide 1: Bio + 6 Tags + "Now" Status Card -->
-                        <div class="slide flex flex-col items-center justify-between md:justify-center text-center">
-                            <p class="text-slate-600 text-[13.5px] md:text-[15px] leading-relaxed mb-3 md:mb-5 max-w-lg">
+                        <div class="slide flex flex-col items-center justify-between md:justify-center text-center md:h-full">
+                            <p class="text-slate-600 text-[13.5px] md:text-[15.5px] leading-relaxed mb-3 md:mb-6 max-w-xl">
                                 🚀 <span class="font-semibold text-slate-800">10th-grade PPLG student</span> passionate about gadget tinkering and tactile, expressive UI design.
                             </p>
 
                             <!-- 6 Bio Tags -->
-                            <div class="flex flex-wrap gap-1.5 md:gap-2 justify-center mb-3.5 md:mb-6 max-w-lg">
+                            <div class="flex flex-wrap gap-1.5 md:gap-2 justify-center mb-3.5 md:mb-7 max-w-xl">
                                 <span class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-xl text-[11px] md:text-xs bg-orange-50/90 text-orange-700 font-semibold border border-orange-100/70"><i class="fa-brands fa-html5 mr-1"></i>HTML5</span>
                                 <span class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-xl text-[11px] md:text-xs bg-sky-50/90 text-sky-700 font-semibold border border-sky-100/70"><i class="fa-brands fa-css3-alt mr-1"></i>CSS</span>
                                 <span class="px-2.5 py-1 md:px-3 md:py-1.5 rounded-xl text-[11px] md:text-xs bg-teal-50/90 text-teal-700 font-semibold border border-teal-100/70"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Expressive UI</span>
@@ -1354,7 +1459,7 @@
                             </div>
 
                             <!-- Frosted "Now" Status Card -->
-                            <div class="w-full max-w-lg text-left p-3 md:p-4 rounded-[1.25rem] bg-white/65 border border-white/90 shadow-xs">
+                            <div class="w-full max-w-xl text-left p-3 md:p-4 rounded-[1.25rem] bg-white/65 border border-white/90 shadow-xs">
                                 <div class="flex items-center justify-between mb-1">
                                     <span class="inline-flex items-center gap-1.5 text-[10px] md:text-[11px] font-extrabold uppercase tracking-wider text-indigo-600">
                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -1369,8 +1474,8 @@
                         </div>
 
                         <!-- Slide 2: Projects -->
-                        <div class="slide">
-                            <div class="relative w-full h-[248px] md:h-[288px] -mb-[28px] md:mb-0">
+                        <div class="slide md:h-full md:flex md:flex-col">
+                            <div class="relative w-full h-[248px] -mb-[28px] md:mb-0 md:flex-1 md:min-h-0 md:h-full">
                                 <div id="projects-scroll-list" class="flex flex-col gap-3 h-full overflow-y-auto overscroll-contain no-scrollbar pb-4">
                                     
                                     <!-- Project 1: Portfolio Website -->
@@ -1439,8 +1544,8 @@
                         </div>
 
                         <!-- Slide 3: Milestones -->
-                        <div class="slide">
-                            <div class="relative w-full h-[248px] md:h-[288px] -mb-[28px] md:mb-0">
+                        <div class="slide md:h-full md:flex md:flex-col">
+                            <div class="relative w-full h-[248px] -mb-[28px] md:mb-0 md:flex-1 md:min-h-0 md:h-full">
                                 <div id="milestones-scroll-list" class="flex flex-col gap-2.5 h-full overflow-y-auto overscroll-contain no-scrollbar pb-5">
                                     
                                     <!-- Milestone 1 -->
@@ -1613,9 +1718,9 @@
                         </div>
 
                         <!-- Slide 4: Contact Form (Web3Forms WhatsApp Request) -->
-                        <div class="slide flex flex-col items-center justify-center">
+                        <div class="slide flex flex-col items-center justify-center md:h-full">
                             <form onsubmit="handleRequest(event)" class="w-full max-w-md flex flex-col gap-3 md:gap-4">
-                                <p class="text-xs md:text-[13px] text-slate-500 text-center px-2 mb-1 font-medium">Enter your email to request my private WhatsApp phone number.</p>
+                                <p class="text-xs md:text-[13.5px] text-slate-500 text-center px-2 mb-1 font-medium">Enter your email to request my private WhatsApp phone number.</p>
                                 <input type="email" required id="email-input" placeholder="you@example.com" class="w-full bg-white/70 border border-white rounded-[1rem] px-4 py-3 md:py-3.5 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-transparent transition-all shadow-inner">
                                 
                                 <button type="submit" id="submit-btn" class="liquid-btn w-full bg-indigo-600 text-white rounded-[1rem] py-3 md:py-3.5 text-sm font-semibold flex items-center justify-center gap-2 shadow-md shadow-indigo-200 cursor-pointer">
@@ -1852,6 +1957,11 @@
                         }
 
                         if (scrollTrack && scrollThumb) {
+                            scrollTrack.addEventListener('contextmenu', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
+
                             scrollTrack.addEventListener('pointerdown', (e) => {
                                 e.stopPropagation();
                                 if (!activeScrollList) return;
@@ -1915,8 +2025,11 @@
                             scrollTrack.addEventListener('pointercancel', releaseScrollIndicator);
 
                             window.addEventListener('resize', updateScrollIndicator);
-                            if (typeof ResizeObserver !== 'undefined' && rightWorkspacePane) {
-                                new ResizeObserver(updateScrollIndicator).observe(rightWorkspacePane);
+                            if (typeof ResizeObserver !== 'undefined') {
+                                const ro = new ResizeObserver(updateScrollIndicator);
+                                if (rightWorkspacePane) ro.observe(rightWorkspacePane);
+                                if (projectsList) ro.observe(projectsList);
+                                if (milestonesList) ro.observe(milestonesList);
                             }
                             if (document.fonts && document.fonts.ready) {
                                 document.fonts.ready.then(updateScrollIndicator);
@@ -2021,6 +2134,10 @@
                         });
 
                         peekPopover.addEventListener('pointerdown', (e) => e.stopPropagation());
+                        peekPopover.addEventListener('contextmenu', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
 
                         function startScrollInertia(velocityY) {
                             if (scrollMomentumRaf) cancelAnimationFrame(scrollMomentumRaf);
@@ -2047,7 +2164,10 @@
                             let lastMoveTime = 0;
                             let velocityY = 0;
 
-                            trigger.addEventListener('contextmenu', (e) => e.preventDefault());
+                            trigger.addEventListener('contextmenu', (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            });
 
                             trigger.addEventListener('pointerdown', (e) => {
                                 e.stopPropagation();
@@ -2143,7 +2263,6 @@
                                 }
                                 peekOpenBtn.classList.remove('peek-btn-armed');
                                 isArmed = false;
-                                if (wasHeld) closeProjectPeek();
                             });
                         });
 
@@ -2646,6 +2765,50 @@
 
             window.addEventListener('popstate', () => {
                 closeProjectDetail(true);
+            });
+        </script>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- COMPONENT 7: GLOBAL ANTI-ZOOM PROTECTION   -->
+    <!-- ========================================== -->
+    <div id="anti-zoom-component" hidden>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                // Block multi-finger pinch zoom on touchscreens (including Desktop Site mode)
+                document.addEventListener('touchstart', (e) => {
+                    if (e.touches && e.touches.length > 1) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+
+                document.addEventListener('touchmove', (e) => {
+                    if (e.touches && e.touches.length > 1) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+
+                // Block WebKit / Safari pinch-gesture events
+                ['gesturestart', 'gesturechange', 'gestureend'].forEach((evtName) => {
+                    document.addEventListener(evtName, (e) => {
+                        e.preventDefault();
+                    }, { passive: false });
+                });
+
+                // Block trackpad pinch & Ctrl/Cmd + mouse-wheel zoom
+                document.addEventListener('wheel', (e) => {
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                    }
+                }, { passive: false });
+
+                // Block Ctrl/Cmd + (+, -, =, 0) keyboard zoom shortcuts
+                document.addEventListener('keydown', (e) => {
+                    if ((e.ctrlKey || e.metaKey) && ['+', '-', '=', '_', '0'].includes(e.key)) {
+                        e.preventDefault();
+                    }
+                });
             });
         </script>
     </div>
