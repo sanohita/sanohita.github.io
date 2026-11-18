@@ -50,7 +50,7 @@
             100% { transform: translate(30px, 40px) scale(1.1); }
         }
         
-        /* Primary Fluid Glass Pane Material (Applied to 1 card on Mobile, 2 split cards on Desktop) */
+        /* Primary Fluid Glass Pane Material (1 centered card on Mobile, 2 split panes on Desktop) */
         .glass-card,
         .desktop-glass-pane {
             background: rgba(255, 255, 255, 0.5);
@@ -60,7 +60,7 @@
             box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
         }
 
-        /* On Desktop (>= 768px / Desktop Site Request), outer wrapper dissolves into a 30/70 Split Layout */
+        /* Desktop / Desktop-Site Request (>= 768px): Outer shell turns transparent for 30/70 top-aligned split panes */
         @media (min-width: 768px) {
             #main-glass-card {
                 background: transparent;
@@ -70,7 +70,7 @@
                 box-shadow: none;
             }
         }
-        /* On Mobile (< 768px), inner left/right wrappers dissolve so the single-card vertical UI stays intact */
+        /* Mobile (< 768px): Inner left/right wrappers dissolve so the single-card vertical UI stays intact */
         @media (max-width: 767.98px) {
             .desktop-glass-pane {
                 display: contents;
@@ -142,26 +142,26 @@
         }
     </style>
 </head>
-<body class="h-[100dvh] overflow-hidden flex items-center justify-center relative text-slate-800 p-4 md:p-8">
+<body class="h-[100dvh] overflow-hidden flex items-center justify-center md:items-start md:justify-start relative text-slate-800 p-4 md:p-6 lg:p-8">
 
     <!-- Floating Ambient Background Orbs -->
     <div class="ambient-orb orb-1"></div>
     <div class="ambient-orb orb-2"></div>
     <div class="ambient-orb orb-3"></div>
     
-    <!-- MAIN RESPONSIVE SHELL: Single Card on Mobile (<768px) | 30-70 Dual Glass Panes on Desktop (>=768px) -->
-    <main id="main-glass-card" class="glass-card w-full max-w-sm md:max-w-4xl lg:max-w-5xl rounded-[2.5rem] p-6 sm:p-8 md:p-0 flex flex-col md:flex-row md:items-stretch md:gap-6 items-center relative z-10">
+    <!-- MAIN RESPONSIVE SHELL: Single Card on Mobile (<768px) | Upper-Left Profile + 70% Right Workspace on Desktop (>=768px) -->
+    <main id="main-glass-card" class="glass-card w-full max-w-sm md:max-w-none md:flex-row md:items-start md:gap-6 rounded-[2.5rem] p-6 sm:p-8 md:p-0 flex flex-col items-center relative z-10">
         
         <!-- ============================================================== -->
-        <!-- LEFT PANE (30% ON DESKTOP): DEMO BUTTON + PROFILE + SOCIALS    -->
+        <!-- UPPER-LEFT GLASS PANE (30% ON DESKTOP): DEMO + PROFILE + SOCIALS -->
         <!-- ============================================================== -->
-        <section id="left-profile-pane" class="desktop-glass-pane md:w-[30%] md:shrink-0 md:rounded-[2.5rem] md:p-7 md:flex md:flex-col md:items-center md:justify-between relative">
+        <section id="left-profile-pane" class="desktop-glass-pane md:w-[30%] md:max-w-[340px] md:shrink-0 md:rounded-[2.5rem] md:px-6 md:pt-12 md:pb-6 md:flex md:flex-col md:items-center relative">
             
             <!-- ========================================== -->
             <!-- COMPONENT 1: PROFILE HEADER                -->
             <!-- ========================================== -->
-            <div id="profile-component" class="max-md:order-1 flex flex-col items-center w-full mb-5 md:mb-0 md:my-auto md:pt-6">
-                <div class="relative w-28 h-28 md:w-32 md:h-32 mb-4 group cursor-pointer">
+            <div id="profile-component" class="max-md:order-1 flex flex-col items-center w-full mb-5 md:mb-1">
+                <div class="relative w-28 h-28 mb-4 group cursor-pointer">
                     <div class="absolute inset-0 rounded-full bg-indigo-200/50 blur-md scale-110 group-hover:scale-125 transition-transform duration-500"></div>
                     <img src="115703.png" 
                          onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Gilang+Kencana&background=c7d2fe&color=3730a3&size=200';"
@@ -170,18 +170,12 @@
                 </div>
                 <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight mb-0.5 text-center">Gilang Kencana</h1>
                 <p class="text-indigo-600 font-semibold text-xs tracking-wide">@juniortechwizard__</p>
-                
-                <!-- Desktop-Only Subtle Role Pill to Balance the 30% Left Glass Pane -->
-                <div class="hidden md:inline-flex items-center gap-1.5 mt-3.5 px-3 py-1 rounded-full bg-white/65 border border-white/90 text-[10.5px] font-bold text-slate-600 shadow-2xs">
-                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-                    <span>10th Grade PPLG</span>
-                </div>
             </div>
 
 
             <!-- ========================================== -->
             <!-- COMPONENT 4: SOCIAL BUTTONS FOOTER         -->
-            <!-- (Bottom of Mobile Card / Bottom of Left 30% Pane) -->
+            <!-- (Bottom of Mobile Card / Bottom of Upper-Left Pane) -->
             <!-- ========================================== -->
             <div id="footer-component" class="max-md:order-4 w-full relative z-40">
                 <style>
@@ -244,7 +238,7 @@
                     }
                 </style>
 
-                <div id="footer-divider-line" class="flex justify-center gap-3.5 md:gap-2.5 lg:gap-3.5 w-full mt-5 md:mt-4 pt-4 border-t border-slate-200/50">
+                <div id="footer-divider-line" class="flex justify-center gap-3.5 md:gap-2.5 lg:gap-3.5 w-full mt-5 pt-4 border-t border-slate-200/50">
                     
                     <!-- 1. GITHUB -->
                     <div class="relative flex justify-center social-item">
@@ -554,7 +548,7 @@
                     }
                 </style>
 
-                <!-- Top-Left Fluid Glass "Demo" Micro-Pill (Top-left of Mobile Card OR Top-left of Desktop Left Pane) -->
+                <!-- Top-Left Fluid Glass "Demo" Micro-Pill (Top-left of Mobile Card OR Top-left of Upper-Left Desktop Pane) -->
                 <button type="button" id="demo-trigger-btn" aria-label="Play Website Demo" class="absolute top-4 left-4 md:top-5 md:left-5 z-30 px-2.5 py-1 rounded-full text-[10px] font-bold text-indigo-600 flex items-center gap-1.5 cursor-pointer select-none">
                     <i id="demo-trigger-icon" class="fa-solid fa-play text-[8px]"></i>
                     <span id="demo-trigger-label">Demo</span>
@@ -571,7 +565,7 @@
 
                 <script>
                     document.addEventListener('DOMContentLoaded', () => {
-                        const mainLayoutShell = document.getElementById('main-glass-card');
+                        const rightPane = document.getElementById('right-workspace-pane');
                         const footerDivider = document.getElementById('footer-divider-line');
                         const demoBtn = document.getElementById('demo-trigger-btn');
                         const demoBtnIcon = document.getElementById('demo-trigger-icon');
@@ -588,17 +582,19 @@
                         let cursorY = window.innerHeight / 2;
                         let cursorScale = 1;
 
-                        // Anchors caption 2px above footer divider on mobile, or cleanly below the dual panes on desktop
+                        // Anchors caption 2px above footer divider on mobile, or centered below the right workspace pane on desktop
                         function syncCaptionPosition() {
                             if (!captionPill) return;
                             const pillHeight = captionPill.offsetHeight || 24;
-                            if (window.innerWidth >= 768 && mainLayoutShell) {
-                                const shellRect = mainLayoutShell.getBoundingClientRect();
-                                const idealTop = shellRect.bottom + 12;
+                            if (window.innerWidth >= 768 && rightPane) {
+                                const rightRect = rightPane.getBoundingClientRect();
+                                const idealTop = rightRect.bottom + 12;
                                 const maxTop = window.innerHeight - pillHeight - 12;
+                                captionPill.style.left = `${Math.round(rightRect.left + rightRect.width / 2)}px`;
                                 captionPill.style.top = `${Math.round(Math.min(idealTop, maxTop))}px`;
                             } else if (footerDivider) {
                                 const lineRect = footerDivider.getBoundingClientRect();
+                                captionPill.style.left = '50%';
                                 captionPill.style.top = `${Math.round(lineRect.top - pillHeight - 2)}px`;
                             }
                         }
@@ -959,9 +955,9 @@
 
 
         <!-- ============================================================== -->
-        <!-- RIGHT PANE (70% ON DESKTOP): FLUID GLASS NAV + 4-SLIDE CONTENT -->
+        <!-- RIGHT WORKSPACE PANE (~70% ON DESKTOP): NAV BAR + 4 SLIDES     -->
         <!-- ============================================================== -->
-        <section id="right-workspace-pane" class="desktop-glass-pane md:w-[70%] md:min-w-0 md:rounded-[2.5rem] md:p-8 md:flex md:flex-col md:justify-between relative">
+        <section id="right-workspace-pane" class="desktop-glass-pane md:flex-1 md:min-w-0 md:rounded-[2.5rem] md:p-8 md:flex md:flex-col md:justify-between relative">
 
             <!-- Rightmost Glass-Card Unified Capsule Scroll Indicator (Shared by Projects & Milestones Tabs) -->
             <div id="projects-scroll-track" aria-hidden="true">
@@ -1338,7 +1334,7 @@
                     </button>
                 </div>
 
-                <div class="slider-container min-h-[236px] md:min-h-[280px]">
+                <div class="slider-container min-h-[236px] md:min-h-[272px]">
                     <div id="content-slider-track" class="slider-track">
                         
                         <!-- Slide 1: Bio + 6 Tags + "Now" Status Card -->
@@ -1374,7 +1370,7 @@
 
                         <!-- Slide 2: Projects -->
                         <div class="slide">
-                            <div class="relative w-full h-[248px] md:h-[296px] -mb-[28px] md:mb-0">
+                            <div class="relative w-full h-[248px] md:h-[288px] -mb-[28px] md:mb-0">
                                 <div id="projects-scroll-list" class="flex flex-col gap-3 h-full overflow-y-auto overscroll-contain no-scrollbar pb-4">
                                     
                                     <!-- Project 1: Portfolio Website -->
@@ -1444,7 +1440,7 @@
 
                         <!-- Slide 3: Milestones -->
                         <div class="slide">
-                            <div class="relative w-full h-[248px] md:h-[296px] -mb-[28px] md:mb-0">
+                            <div class="relative w-full h-[248px] md:h-[288px] -mb-[28px] md:mb-0">
                                 <div id="milestones-scroll-list" class="flex flex-col gap-2.5 h-full overflow-y-auto overscroll-contain no-scrollbar pb-5">
                                     
                                     <!-- Milestone 1 -->
@@ -1946,8 +1942,9 @@
                             const rawBottomOffset = wrapperRect.bottom - visibleCardTop + 12;
 
                             const popoverH = peekPopover.offsetHeight || 265;
-                            const maxBottom = Math.max(4, wrapperRect.bottom - (mainRect.top + 10 + popoverH));
-                            const bottomOffset = Math.max(4, Math.min(maxBottom, rawBottomOffset));
+                            const safeTopBoundary = Math.max(12, mainRect.top);
+                            const maxBottom = Math.max(12, wrapperRect.bottom - (safeTopBoundary + popoverH));
+                            const bottomOffset = Math.max(8, Math.min(maxBottom, rawBottomOffset));
 
                             peekPopover.style.bottom = `${bottomOffset}px`;
                         }
